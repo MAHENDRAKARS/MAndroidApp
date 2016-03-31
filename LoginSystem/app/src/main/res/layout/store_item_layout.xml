@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="store"
+            type="com.yathams.loginsystem.model.LocationItem" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/storeItemContainer"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewStoreName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:text="@{store.storeName}"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+</layout>
