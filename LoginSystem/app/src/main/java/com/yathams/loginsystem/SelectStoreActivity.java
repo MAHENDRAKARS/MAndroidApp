@@ -22,8 +22,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.yathams.loginsystem.adapters.StoreLocationsAdapter;
 import com.yathams.loginsystem.model.LocationItem;
+import com.yathams.loginsystem.model.LogInResponse;
+import com.yathams.loginsystem.model.NearByStoresResponse;
+import com.yathams.loginsystem.utils.Utils;
+import com.yathams.loginsystem.utils.Webservice;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +46,9 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
     private SupportMapFragment mapFragment;
     private RecyclerView recyclerView;
     private StoreLocationsAdapter adapter;
+    private AsyncTask getNearByStoresAsync;
+    private NearByStoresResponse nearByStoresResponse;
+    private View progressBar, mainContainer;
 
     /**
      * Represents a geographical location.
@@ -45,22 +57,64 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
 
     @Override
     public void onPreExecute() {
-
+        showProgress(true);
+        if(getNearByStoresAsync != null) {
+            nearByStoresResponse = null;
+        }
     }
 
     @Override
     public String doInBackground(String[] params) {
+        if(getNearByStoresAsync != null) {
+            getStoreItems();
+            JSONObject jsonObject = new JSONObject();
+            String response;
+            try {
+                jsonObject.put("latitude", params[0]);
+                jsonObject.put("longitude", params[1]);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.v("Request json", jsonObject.toString());
+            response = Webservice.callPostService(Webservice.GET_NEAR_BY_STORES, jsonObject.toString());
+            try {
+                nearByStoresResponse = new Gson().fromJson(response, NearByStoresResponse.class);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         return null;
     }
 
     @Override
     public void onPostExecute() {
+        showProgress(false);
+        if(getNearByStoresAsync != null) {
+            if(nearByStoresResponse != null){
+                if(nearByStoresResponse.status == 1){
+                    storeItems = nearByStoresResponse.stores;
+                }else{
+                    Utils.showToast(mBaseActivity, nearByStoresResponse.message);
+                }
+            }
+            addMarkers();
+            adapter = new StoreLocationsAdapter(mBaseActivity, storeItems);
+            recyclerView.setAdapter(adapter);
 
+            getNearByStoresAsync = null;
+        }
     }
 
     @Override
     public void onCanceled() {
-
+        if(getNearByStoresAsync != null) {
+            getNearByStoresAsync = null;
+        }
     }
 
     @Override
@@ -73,6 +127,8 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
         mBaseActivity = this;
         recyclerView = (RecyclerView) findViewById(R.id.storeLocationsRecyclerView);
+        progressBar = findViewById(R.id.login_progress);
+        mainContainer = findViewById(R.id.mainContainer);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,
@@ -108,6 +164,15 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
 
     }
 
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+
+    private void showProgress(final boolean show) {
+        //hide the relevant UI components.
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
+        mainContainer.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
     protected void onStart() {
 
         super.onStart();
@@ -160,11 +225,9 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
             mMap.addMarker(new MarkerOptions().position(myloc).title("Marker in myloc"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(myloc));
 
-            getStoreItems();
-            addMarkers();
+            getNearByStoresAsync = new AsyncTask(mBaseActivity);
+            getNearByStoresAsync.execute(String.valueOf(mLastLocation.getLatitude()), String.valueOf(mLastLocation.getLongitude()));
 
-            adapter = new StoreLocationsAdapter(mBaseActivity, storeItems);
-            recyclerView.setAdapter(adapter);
         }
     }
 
@@ -177,7 +240,7 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
     private List<LocationItem> storeItems;
     private void getStoreItems() {
         storeItems = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             LocationItem locationItem = new LocationItem();
             locationItem.latitude = (float) (17.431654+(i/1000.0));
             locationItem.logitude = (float) (78.234524+(i/1000.0));
@@ -235,6 +298,22 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     public void sendButtonClicked(View view) {
+        if(!Utils.isNetworkAvailable(mBaseActivity)){
+            Utils.showNetworkAlertDialog(mBaseActivity);
+        }else{
+            boolean isAtLeastOneStoreSelected = false;
+            for (LocationItem storeItem : storeItems) {
+                if(storeItem.isSelected){
+                    isAtLeastOneStoreSelected = true;
+                    break;
+                }
+            }
 
+            if(!isAtLeastOneStoreSelected){
+                Utils.showToast(mBaseActivity, "Please select a store to send");
+            }else{
+
+            }
+        }
     }
 }
