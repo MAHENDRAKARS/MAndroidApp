@@ -2,6 +2,7 @@ package com.yathams.loginsystem;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class FilesUploadActivity extends BaseActivity {
     private static final int REQUEST_CAMERA = 2;
     private ActivityFilesUploadBinding binding;
     private DBAdapter dbAdapter;
+    private String email = "";
+
     @Override
     public void onPreExecute() {
 
@@ -121,6 +124,10 @@ public class FilesUploadActivity extends BaseActivity {
                 startActivity(new Intent(mBaseActivity, SelectStoreActivity.class));
             }
         });
+
+        SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
+        email = preferences.getString("email", "");
+        getSupportActionBar().setTitle(email);
 
     }
 

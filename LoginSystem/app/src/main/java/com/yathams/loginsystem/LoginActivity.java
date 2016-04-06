@@ -3,6 +3,7 @@ package com.yathams.loginsystem;
 import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -46,6 +47,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
     private ActivityLoginBinding binding;
     private LogInResponse loginResponse;
 
+    private String email = "";
+
     @Override
     public void onPreExecute() {
         showProgress(true);
@@ -61,7 +64,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
                 jsonObject.put("id", params[0]);
                 jsonObject.put("email", params[1]);
                 jsonObject.put("name", params[2]);
-
+                email = params[1];
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -71,7 +74,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
             try {
                 jsonObject.put("email", params[0]);
                 jsonObject.put("password", params[1]);
-
+                email = params[0];
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -94,6 +97,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
         showProgress(false);
         if (loginResponse != null) {
             if (loginResponse.status == 0) { // success
+                SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
+                preferences.edit().putString("email", email).putString("userId", loginResponse.userId).commit();
                 startActivity(new Intent(mBaseActivity, FilesUploadActivity.class));
                 finish();
             } else { // Failed login shoe error message
@@ -118,6 +123,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
 
     private ConnectionResult mConnectionResult;
     private GoogleApiClient mGoogleApiClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -201,6 +207,13 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
             }
         }else{
 //            doGetCurrentLocation();
+        }
+
+        SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
+        email = preferences.getString("email", "");
+        if(!email.isEmpty()){
+            startActivity(new Intent(mBaseActivity, FilesUploadActivity.class));
+            finish();
         }
     }
 
