@@ -379,6 +379,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
                         + ", Image: " + personPhotoUrl);
                 signInTask = new AsyncTask(mBaseActivity);
                 signInTask.execute(id, email, personName);
+                SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
+                preferences.edit().putString("email", email).putString("userName", personName).commit();
 
             } else {
                 Toast.makeText(getApplicationContext(),

@@ -29,6 +29,7 @@ import com.yathams.loginsystem.databinding.ActivityFilesUploadBinding;
 import com.yathams.loginsystem.databinding.ActivityHomeBinding;
 import com.yathams.loginsystem.pojo.ImageItem;
 import com.yathams.loginsystem.pojo.ProductItem;
+import com.yathams.loginsystem.pojo.UserAccount;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -43,6 +44,7 @@ public class HomeActivity extends BaseActivity
 
     private static final int PICK_PHOTO_FOR_AVATAR = 1;
     private static final int REQUEST_CAMERA = 2;
+    private static  final int USER_ACCOUNT = 3;
     private ActivityHomeBinding binding;
     private DBAdapter dbAdapter;
     private String email = "";
@@ -73,8 +75,6 @@ public class HomeActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home);
         mBaseActivity = this;
         dbAdapter = new DBAdapter(getApplicationContext());
@@ -171,7 +171,7 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_user_account) {
-            // Handle the camera action
+            startActivityForResult(new Intent(mBaseActivity, UserAccountActivity.class), USER_ACCOUNT);
         } else if (id == R.id.nav_open_requests) {
 
         } else if (id == R.id.nav_faq) {
@@ -194,7 +194,11 @@ public class HomeActivity extends BaseActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
+        if(requestCode == USER_ACCOUNT && resultCode == Activity.RESULT_OK){
+            startActivity(new Intent(mBaseActivity, LoginActivity.class));
+            finish();
+        }
+        else if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == Activity.RESULT_OK) {
             if (data == null) {
                 //Display an error
                 return;
