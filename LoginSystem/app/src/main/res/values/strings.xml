@@ -22,4 +22,10 @@
     <string name="submit">Submit</string>
     <string name="no_internet">Please check your internet connectivity</string>
     <string name="title_activity_select_store">Select Store</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

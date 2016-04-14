@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
             if (loginResponse.status == 0) { // success
                 SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
                 preferences.edit().putString("email", email).putString("userId", loginResponse.userId).commit();
-                startActivity(new Intent(mBaseActivity, FilesUploadActivity.class));
+                startActivity(new Intent(mBaseActivity, HomeActivity.class));
                 finish();
             } else { // Failed login shoe error message
                 Utils.showToast(mBaseActivity, loginResponse.message);
@@ -108,7 +108,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
             Utils.showToast(mBaseActivity, "Something went wrong");
         }
         signInTask = null;
-        startActivity(new Intent(mBaseActivity, FilesUploadActivity.class));
+        startActivity(new Intent(mBaseActivity, HomeActivity.class));
         finish();
     }
 
@@ -212,7 +212,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
         SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
         email = preferences.getString("email", "");
         if(!email.isEmpty()){
-            startActivity(new Intent(mBaseActivity, FilesUploadActivity.class));
+            startActivity(new Intent(mBaseActivity, HomeActivity.class));
             finish();
         }
     }
