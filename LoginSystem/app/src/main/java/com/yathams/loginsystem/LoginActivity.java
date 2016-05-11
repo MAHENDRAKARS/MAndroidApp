@@ -6,7 +6,9 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -47,6 +49,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
     private ActivityLoginBinding binding;
     private LogInResponse loginResponse;
 
+
     private String email = "";
 
     @Override
@@ -61,9 +64,15 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
         String response;
         if(params.length > 2){
             try {
-                jsonObject.put("id", params[0]);
+                jsonObject.put("userId", params[0]);
                 jsonObject.put("email", params[1]);
                 jsonObject.put("name", params[2]);
+                jsonObject.put("UUID", androidUUID);
+                jsonObject.put("deviceName", deviceName);
+                jsonObject.put("manufacturer", deviceManufacturer);
+                jsonObject.put("platform", platform);
+                jsonObject.put("serial", serial);
+                jsonObject.put("version", version);
                 email = params[1];
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -96,9 +105,9 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
     public void onPostExecute() {
         showProgress(false);
         if (loginResponse != null) {
-            if (loginResponse.status == 0) { // success
+            if (loginResponse.status == 1) { // success
                 SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
-                preferences.edit().putString("email", email).putString("userId", loginResponse.userId).commit();
+                preferences.edit().putString("email", email).putString("userId", loginResponse.user.userID).putString("anonymousId", loginResponse.user.AnonymousID).commit();
                 startActivity(new Intent(mBaseActivity, HomeActivity.class));
                 finish();
             } else { // Failed login shoe error message
@@ -123,6 +132,12 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
 
     private ConnectionResult mConnectionResult;
     private GoogleApiClient mGoogleApiClient;
+    private String androidUUID;
+    private String deviceName;
+    private String deviceManufacturer;
+    private String serial;
+    private String version;
+    private String platform = "Android";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,6 +154,13 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
                 return false;
             }
         });
+
+        androidUUID = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        deviceName = Build.MODEL;
+        deviceManufacturer = Build.MANUFACTURER;
+        serial = Build.SERIAL;
+        version = Build.VERSION.RELEASE;
 
         binding.emailSignInButton.setOnClickListener(new OnClickListener() {
             @Override

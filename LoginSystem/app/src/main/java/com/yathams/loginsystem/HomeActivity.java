@@ -152,6 +152,9 @@ public class HomeActivity extends BaseActivity
         SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
         email = preferences.getString("email", "");
         getSupportActionBar().setTitle(email);
+        if(!email.isEmpty()){
+            navigationView.getMenu().removeItem(R.id.nav_provider_login);
+        }
     }
 
     @Override
@@ -171,7 +174,13 @@ public class HomeActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_user_account) {
-            startActivityForResult(new Intent(mBaseActivity, UserAccountActivity.class), USER_ACCOUNT);
+            SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
+            if(preferences.getString("email", "").isEmpty()){
+                startActivity(new Intent(mBaseActivity, LoginActivity.class));
+                finish();
+            }else {
+                startActivityForResult(new Intent(mBaseActivity, UserAccountActivity.class), USER_ACCOUNT);
+            }
         } else if (id == R.id.nav_open_requests) {
 
         } else if (id == R.id.nav_faq) {

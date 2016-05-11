@@ -1,5 +1,6 @@
 package com.yathams.loginsystem;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,9 +31,9 @@ public class ResetPasswordActivity extends BaseActivity {
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("oldPassword", params[0]);
-            jsonObject.put("newPassword", params[1]);
-            jsonObject.put("userId", "");
+            jsonObject.put("token", params[0]);
+            jsonObject.put("password", params[1]);
+            jsonObject.put("userId", "useId");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -54,10 +55,12 @@ public class ResetPasswordActivity extends BaseActivity {
     public void onPostExecute() {
         showProgress(false);
         if(resetPasswordResponse != null){
-            if(resetPasswordResponse.status == 0){ //success
+            if(resetPasswordResponse.status == 1){ //success
                 binding.currentPassword.setText("");
                 binding.password.setText("");
                 binding.confirmPassword.setText("");
+                finish();
+                startActivity(new Intent(mBaseActivity, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
                 Utils.showToast(mBaseActivity, resetPasswordResponse.message);
         }else{
@@ -75,13 +78,14 @@ public class ResetPasswordActivity extends BaseActivity {
     private AsyncTask resetPasswordTask;
     private ActivityResetPasswordBinding binding;
     private Response resetPasswordResponse;
+    private String userId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reset_password);
         mBaseActivity = this;
-
+        userId = getIntent().getStringExtra("userId");
         binding.buttonResetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

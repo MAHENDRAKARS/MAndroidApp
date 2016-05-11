@@ -13,7 +13,7 @@ import java.net.URL;
 public class Webservice {
 
     private static final int TIME_OUT = 30*1000; //30 sec
-    public static final String BASE = "http://www.google.com/";
+    public static final String BASE = "http://www.miggltest.com/androidtest/";
 
     public static final String LOGIN = "login.php";
     public static final String SIGN_UP = "sign_up.php";

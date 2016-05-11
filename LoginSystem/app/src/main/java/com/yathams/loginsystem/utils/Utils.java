@@ -28,7 +28,11 @@ public class Utils {
 
     public static boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 5;
+    }
+
+    public static boolean isMobileNumberValid(String mobileNumber) {
+        return mobileNumber.length() == 10;
     }
 
     public static void showToast(BaseActivity mBaseActivity, String message) {

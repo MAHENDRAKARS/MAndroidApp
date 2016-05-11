@@ -1,5 +1,6 @@
 package com.yathams.loginsystem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.ProgressBar;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.yathams.loginsystem.model.FogotPasswordResponse;
 import com.yathams.loginsystem.model.Response;
 import com.yathams.loginsystem.utils.Utils;
 import com.yathams.loginsystem.utils.Webservice;
@@ -37,7 +39,7 @@ public class ForgotPasswordActivity extends BaseActivity {
         String response = Webservice.callPostService(Webservice.FORGOT_PASSWORD, jsonObject.toString());
 
         try {
-            forgotPasswordResponse = new Gson().fromJson(response, Response.class);
+            forgotPasswordResponse = new Gson().fromJson(response, FogotPasswordResponse.class);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
         } catch (Exception e){
@@ -51,7 +53,10 @@ public class ForgotPasswordActivity extends BaseActivity {
         showProgress(false);
 
         if(forgotPasswordResponse != null){
-            if(forgotPasswordResponse.status == 0){ //success
+            if(forgotPasswordResponse.status == 1){ //success
+                Intent intent = new Intent(mBaseActivity, ResetPasswordActivity.class);
+                intent.putExtra("userId", forgotPasswordResponse.userID);
+                startActivity(intent);
                 finish();
             }
             Utils.showToast(mBaseActivity, forgotPasswordResponse.message);
@@ -72,7 +77,7 @@ public class ForgotPasswordActivity extends BaseActivity {
     private EditText emailEditText;
     private View forgotLayout;
     private ProgressBar progressBar;
-    private Response forgotPasswordResponse;
+    private FogotPasswordResponse forgotPasswordResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

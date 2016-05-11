@@ -1,7 +1,8 @@
 package com.yathams.loginsystem;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
+import android.provider.Settings;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +32,13 @@ public class SignUpActivity extends BaseActivity {
         try {
             jsonObject.put("email", params[0]);
             jsonObject.put("password", params[1]);
+            jsonObject.put("mobileNumber", params[2]);
+            jsonObject.put("UUID", androidUUID);
+            jsonObject.put("deviceName", deviceName);
+            jsonObject.put("manufacturer", deviceManufacturer);
+            jsonObject.put("platform", platform);
+            jsonObject.put("serial", serial);
+            jsonObject.put("version", version);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -51,7 +59,7 @@ public class SignUpActivity extends BaseActivity {
     public void onPostExecute() {
         showProgress(false);
         if(signUpResponse != null){
-            if(signUpResponse.status == 0){ //Sign up success
+            if(signUpResponse.status == 1){ //Sign up success
                 finish();
             }else{ // Sign up failed and error message
                 Utils.showToast(mBaseActivity, signUpResponse.message);
@@ -72,6 +80,12 @@ public class SignUpActivity extends BaseActivity {
     private ActivitySignUpBinding binding;
     private AsyncTask signUpTask;
     private Response signUpResponse;
+    private String androidUUID;
+    private String deviceName;
+    private String deviceManufacturer;
+    private String serial;
+    private String version;
+    private String platform = "Android";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +99,12 @@ public class SignUpActivity extends BaseActivity {
                 attemptSignUp();
             }
         });
+        androidUUID = Settings.Secure.getString(getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        deviceName = Build.MODEL;
+        deviceManufacturer = Build.MANUFACTURER;
+        serial = Build.SERIAL;
+        version = Build.VERSION.RELEASE;
     }
 
     private void attemptSignUp() {
@@ -103,6 +123,7 @@ public class SignUpActivity extends BaseActivity {
 
         // Store values at the time of the login attempt.
         String email = binding.email.getText().toString();
+        String mobileNumber = binding.mobileNumber.getText().toString();
         String password = binding.password.getText().toString();
         String confirmPassword = binding.confirmPassword.getText().toString();
 
@@ -112,6 +133,10 @@ public class SignUpActivity extends BaseActivity {
         if(TextUtils.isEmpty(email)){
             binding.email.setError(getString(R.string.error_field_required));
             focusView = binding.email;
+            cancel = true;
+        }else if(TextUtils.isEmpty(mobileNumber)){
+            binding.mobileNumber.setError(getString(R.string.error_field_required));
+            focusView = binding.mobileNumber;
             cancel = true;
         }else if(TextUtils.isEmpty(password)){
             binding.password.setError(getString(R.string.error_field_required));
@@ -126,12 +151,16 @@ public class SignUpActivity extends BaseActivity {
             focusView = binding.email;
             cancel = true;
         }else if(!Utils.isPasswordValid(password)){
-            binding.password.setError(getString(R.string.error_invalid_password));
+            binding.password.setError(getString(R.string.error_invalid_mobile_number));
             focusView = binding.password;
             cancel = true;
         }else if(!TextUtils.equals(password, confirmPassword)){
             binding.confirmPassword.setError(getString(R.string.error_passwords_are_not_matched));
             focusView = binding.confirmPassword;
+            cancel = true;
+        }else if(!Utils.isMobileNumberValid(mobileNumber)){
+            binding.mobileNumber.setError(getString(R.string.error_passwords_are_not_matched));
+            focusView = binding.mobileNumber;
             cancel = true;
         }
 
@@ -144,7 +173,7 @@ public class SignUpActivity extends BaseActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user signUp attempt.
             signUpTask = new AsyncTask(mBaseActivity);
-            signUpTask.execute(email, password);
+            signUpTask.execute(email, password, mobileNumber);
         }
 
     }
