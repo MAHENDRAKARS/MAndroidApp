@@ -39,6 +39,7 @@ public class SignUpActivity extends BaseActivity {
             jsonObject.put("platform", platform);
             jsonObject.put("serial", serial);
             jsonObject.put("version", version);
+            jsonObject.put("userType", "User");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -151,7 +152,7 @@ public class SignUpActivity extends BaseActivity {
             focusView = binding.email;
             cancel = true;
         }else if(!Utils.isPasswordValid(password)){
-            binding.password.setError(getString(R.string.error_invalid_mobile_number));
+            binding.password.setError(getString(R.string.error_invalid_password));
             focusView = binding.password;
             cancel = true;
         }else if(!TextUtils.equals(password, confirmPassword)){
@@ -159,7 +160,7 @@ public class SignUpActivity extends BaseActivity {
             focusView = binding.confirmPassword;
             cancel = true;
         }else if(!Utils.isMobileNumberValid(mobileNumber)){
-            binding.mobileNumber.setError(getString(R.string.error_passwords_are_not_matched));
+            binding.mobileNumber.setError(getString(R.string.error_invalid_mobile_number));
             focusView = binding.mobileNumber;
             cancel = true;
         }

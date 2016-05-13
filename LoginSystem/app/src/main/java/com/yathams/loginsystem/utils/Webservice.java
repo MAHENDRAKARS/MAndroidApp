@@ -17,6 +17,7 @@ public class Webservice {
 
     public static final String LOGIN = "login.php";
     public static final String SIGN_UP = "sign_up.php";
+    public static final String PROVIDER_SIGN_UP = "provider_sign_up.php";
     public static final String RESET_PASSWORD = "reset_password.php";
     public static final String FORGOT_PASSWORD = "forgot_password.php";
     public static final String STORE_GPLUS_INFO = "save_gplus_info.php";

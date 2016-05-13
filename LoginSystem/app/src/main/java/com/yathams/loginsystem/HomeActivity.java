@@ -182,7 +182,7 @@ public class HomeActivity extends BaseActivity
                 startActivityForResult(new Intent(mBaseActivity, UserAccountActivity.class), USER_ACCOUNT);
             }
         } else if (id == R.id.nav_open_requests) {
-
+            startActivity(new Intent(mBaseActivity, ProviderSignUpActivity.class));
         } else if (id == R.id.nav_faq) {
 
         } else if (id == R.id.nav_terms) {
@@ -190,7 +190,9 @@ public class HomeActivity extends BaseActivity
         } else if (id == R.id.nav_privacy) {
 
         } else if (id == R.id.nav_provider_login) {
-
+            Intent loginIntent = new Intent(mBaseActivity, LoginActivity.class);
+            loginIntent.putExtra("userType", "Provider");
+            startActivity(loginIntent);
         } else if (id == R.id.nav_contact_us) {
 
         }

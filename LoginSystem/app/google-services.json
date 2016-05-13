@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "362356507029",
+    "project_id": "loginsystem-ba3b8"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362356507029:android:53680e025b9a23ab",
+        "android_client_info": {
+          "package_name": "com.yathams.loginsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "362356507029-eo85hu6jidc0l6l8vn2er4f19irber8m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yathams.loginsystem",
+            "certificate_hash": "405F6C156C2BEAEDAE2709E92A7555C4CEEFB48E"
+          }
+        },
+        {
+          "client_id": "362356507029-8ob38be53r0aikq2ousseihe49hmpdmj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBK6RY7q6ax4KqvHQ3pua-ryOrbGU-xnsQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

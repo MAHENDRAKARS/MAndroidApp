@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
     private AsyncTask signInTask;
     private ActivityLoginBinding binding;
     private LogInResponse loginResponse;
-
+    private String userType = "User";
 
     private String email = "";
 
@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
         String response;
         if(params.length > 2){
             try {
-                jsonObject.put("userId", params[0]);
+                jsonObject.put("guserId", params[0]);
                 jsonObject.put("email", params[1]);
                 jsonObject.put("name", params[2]);
                 jsonObject.put("UUID", androidUUID);
@@ -73,16 +73,18 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
                 jsonObject.put("platform", platform);
                 jsonObject.put("serial", serial);
                 jsonObject.put("version", version);
+                jsonObject.put("userType", userType);
                 email = params[1];
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             Log.v("Request json", jsonObject.toString());
-            response = Webservice.callPostService(Webservice.STORE_GPLUS_INFO, jsonObject.toString());
+            response = Webservice.callPostService(Webservice.SIGN_UP, jsonObject.toString());
         }else {
             try {
                 jsonObject.put("email", params[0]);
                 jsonObject.put("password", params[1]);
+                jsonObject.put("userType", userType);
                 email = params[0];
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -107,7 +109,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
         if (loginResponse != null) {
             if (loginResponse.status == 1) { // success
                 SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
-                preferences.edit().putString("email", email).putString("userId", loginResponse.user.userID).putString("anonymousId", loginResponse.user.AnonymousID).commit();
+                preferences.edit().putString("email", loginResponse.user.userEmail).putString("userId", loginResponse.user.userID).putString("anonymousId", loginResponse.user.AnonymousID).commit();
                 startActivity(new Intent(mBaseActivity, HomeActivity.class));
                 finish();
             } else { // Failed login shoe error message
@@ -117,8 +119,6 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
             Utils.showToast(mBaseActivity, "Something went wrong");
         }
         signInTask = null;
-        startActivity(new Intent(mBaseActivity, HomeActivity.class));
-        finish();
     }
 
     @Override
@@ -172,14 +172,20 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
         binding.buttonForgotPassword.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
+                Intent forgotPassword = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+                forgotPassword.putExtra("userType", userType);
+                startActivity(forgotPassword);
             }
         });
 
         binding.buttonSignUp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+                if(userType.equals("Provider")){
+                    startActivity(new Intent(getApplicationContext(), ProviderSignUpActivity.class));
+                }else {
+                    startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+                }
             }
         });
 
@@ -209,7 +215,7 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.GET_ACCOUNTS)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
+                // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
                 ActivityCompat.requestPermissions(this,
@@ -230,13 +236,14 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
         }else{
 //            doGetCurrentLocation();
         }
-
-        SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
-        email = preferences.getString("email", "");
-        if(!email.isEmpty()){
-            startActivity(new Intent(mBaseActivity, HomeActivity.class));
-            finish();
-        }
+        userType = getIntent().getStringExtra("userType");
+        userType = userType == null || userType.isEmpty() ? "User":userType;
+//        SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
+//        email = preferences.getString("email", "");
+//        if(!email.isEmpty()){
+//            startActivity(new Intent(mBaseActivity, HomeActivity.class));
+//            finish();
+//        }
     }
 
     @Override
@@ -401,8 +408,8 @@ public class LoginActivity extends BaseActivity implements GoogleApiClient.Conne
                         + ", Image: " + personPhotoUrl);
                 signInTask = new AsyncTask(mBaseActivity);
                 signInTask.execute(id, email, personName);
-                SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
-                preferences.edit().putString("email", email).putString("userName", personName).commit();
+//                SharedPreferences preferences = mBaseActivity.getSharedPreferences("com.yathams.loginsystem", MODE_PRIVATE);
+//                preferences.edit().putString("email", email).putString("userName", personName).commit();
 
             } else {
                 Toast.makeText(getApplicationContext(),

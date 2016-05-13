@@ -9,6 +9,7 @@ public class LogInResponse extends Response {
         public String userID = "";
         public String userEmail = "";
         public String AnonymousID = "";
+        public String userType = "";
     }
 }
 

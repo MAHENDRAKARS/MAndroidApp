@@ -17,95 +17,251 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".ProviderSignUpActivity">
-        <!-- Login progress -->
-        <ProgressBar
-            android:id="@+id/login_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/signUpLayout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <!-- Login progress -->
+                <ProgressBar
+                    android:id="@+id/login_progress"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:visibility="gone" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/email"
+                <LinearLayout
+                    android:id="@+id/signUpLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_email"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:orientation="vertical">
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <AutoCompleteTextView
+                            android:id="@+id/storeName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Store Name"
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:singleLine="true" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/mobileNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_mobile_number"
-                    android:imeOptions="actionNext"
-                    android:inputType="phone"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <AutoCompleteTextView
+                            android:id="@+id/storeAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Store Address"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPostalAddress"
+                            android:maxLines="1"
+                            android:singleLine="true" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <AutoCompleteTextView
+                            android:id="@+id/city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="City"
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:singleLine="true" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/confirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_confirm_password"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/buttonSignUp"
-                style="?android:textAppearanceSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="15dp"
-                android:text="@string/signUp"
-                android:textStyle="bold" />
+                        <AutoCompleteTextView
+                            android:id="@+id/state"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="State"
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:singleLine="true" />
 
-        </LinearLayout>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/zipCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Zip code"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/storePhone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Store phone #"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/mobileNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/prompt_mobile_number"
+                            android:imeOptions="actionNext"
+                            android:inputType="phone"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/contactPersonName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Contact Person Name"
+                            android:imeOptions="actionNext"
+                            android:inputType="textCapWords"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/latitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/longitude"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:imeOptions="actionNext"
+                            android:inputType="numberDecimal"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/prompt_email"
+                            android:imeOptions="actionNext"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/prompt_password"
+                            android:imeOptions="actionNext"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/confirmPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/prompt_confirm_password"
+                            android:imeOptions="actionDone"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:singleLine="true" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/buttonSignUp"
+                        style="?android:textAppearanceSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_margin="15dp"
+                        android:text="@string/signUp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 </layout>
