@@ -30,6 +30,7 @@ import com.yathams.loginsystem.databinding.ActivityHomeBinding;
 import com.yathams.loginsystem.pojo.ImageItem;
 import com.yathams.loginsystem.pojo.ProductItem;
 import com.yathams.loginsystem.pojo.UserAccount;
+import com.yathams.loginsystem.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -155,6 +156,8 @@ public class HomeActivity extends BaseActivity
         if(!email.isEmpty()){
             navigationView.getMenu().removeItem(R.id.nav_provider_login);
         }
+
+        Utils.showTermsAndConditionsDialog(mBaseActivity);
     }
 
     @Override

@@ -2,11 +2,13 @@ package com.yathams.loginsystem.utils;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.view.View;
 import android.widget.Toast;
 
 import com.yathams.loginsystem.BaseActivity;
@@ -80,5 +82,24 @@ public class Utils {
 
         return text;
 
+    }
+
+    public static void showTermsAndConditionsDialog(Activity activity){
+        final Dialog dialog = new Dialog(activity, R.style.FullScreenDialogTheme);
+        dialog.setContentView(R.layout.terms_and_conditions);
+        dialog.setCancelable(false);
+        dialog.findViewById(R.id.buttonAccept).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.findViewById(R.id.buttonDecline).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }
