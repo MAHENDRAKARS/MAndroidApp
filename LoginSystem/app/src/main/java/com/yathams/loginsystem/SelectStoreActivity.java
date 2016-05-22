@@ -25,8 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.yathams.loginsystem.adapters.StoreLocationsAdapter;
-import com.yathams.loginsystem.model.LocationItem;
-import com.yathams.loginsystem.model.LogInResponse;
+import com.yathams.loginsystem.model.StoreLocation;
 import com.yathams.loginsystem.model.NearByStoresResponse;
 import com.yathams.loginsystem.utils.Utils;
 import com.yathams.loginsystem.utils.Webservice;
@@ -34,7 +33,6 @@ import com.yathams.loginsystem.utils.Webservice;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -66,7 +64,6 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
     @Override
     public String doInBackground(String[] params) {
         if(getNearByStoresAsync != null) {
-            getStoreItems();
             JSONObject jsonObject = new JSONObject();
             String response;
             try {
@@ -77,7 +74,7 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
                 e.printStackTrace();
             }
             Log.v("Request json", jsonObject.toString());
-            response = Webservice.callPostService(Webservice.GET_NEAR_BY_STORES, jsonObject.toString());
+            response = Webservice.callPostService(Webservice.GET_STORE_LOCATIONS, jsonObject.toString());
             try {
                 nearByStoresResponse = new Gson().fromJson(response, NearByStoresResponse.class);
             } catch (JsonSyntaxException e) {
@@ -98,13 +95,17 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
             if(nearByStoresResponse != null){
                 if(nearByStoresResponse.status == 1){
                     storeItems = nearByStoresResponse.stores;
+                    adapter = new StoreLocationsAdapter(mBaseActivity, storeItems);
+                    recyclerView.setAdapter(adapter);
+                    addMarkers();
                 }else{
                     Utils.showToast(mBaseActivity, nearByStoresResponse.message);
                 }
+            }else{
+                Utils.showToast(mBaseActivity, "Something went wrong");
             }
-            addMarkers();
-            adapter = new StoreLocationsAdapter(mBaseActivity, storeItems);
-            recyclerView.setAdapter(adapter);
+
+
 
             getNearByStoresAsync = null;
         }
@@ -232,22 +233,13 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
     }
 
     private void addMarkers() {
-        for (LocationItem storeItem : storeItems) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(storeItem.latitude, storeItem.logitude)).title(storeItem.storeName));
+        if(storeItems != null)
+        for (StoreLocation storeItem : storeItems) {
+            mMap.addMarker(new MarkerOptions().position(new LatLng(storeItem.latitude, storeItem.longitude)).title(storeItem.storeName));
         }
     }
 
-    private List<LocationItem> storeItems;
-    private void getStoreItems() {
-        storeItems = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
-            LocationItem locationItem = new LocationItem();
-            locationItem.latitude = (float) (17.431654+(i/1000.0));
-            locationItem.logitude = (float) (78.234524+(i/1000.0));
-            locationItem.storeName = "Store "+i;
-            storeItems.add(locationItem);
-        }
-    }
+    private List<StoreLocation> storeItems;
 
     @Override
     public void onConnectionSuspended(int i) {
@@ -302,7 +294,7 @@ public class SelectStoreActivity extends BaseActivity implements OnMapReadyCallb
             Utils.showNetworkAlertDialog(mBaseActivity);
         }else{
             boolean isAtLeastOneStoreSelected = false;
-            for (LocationItem storeItem : storeItems) {
+            for (StoreLocation storeItem : storeItems) {
                 if(storeItem.isSelected){
                     isAtLeastOneStoreSelected = true;
                     break;

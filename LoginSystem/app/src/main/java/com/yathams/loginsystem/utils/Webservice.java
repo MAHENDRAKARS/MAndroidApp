@@ -21,7 +21,7 @@ public class Webservice {
     public static final String RESET_PASSWORD = "reset_password.php";
     public static final String FORGOT_PASSWORD = "forgot_password.php";
     public static final String STORE_GPLUS_INFO = "save_gplus_info.php";
-    public static final String GET_NEAR_BY_STORES = "get_near_by_stores.php";
+    public static final String GET_STORE_LOCATIONS = "store_locations.php";
     public static final String SEND_TO_STORES = "send_to_stores.php";
 
     public static String callPostService(String urlString, String requestString) {

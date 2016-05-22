@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.yathams.loginsystem.R;
-import com.yathams.loginsystem.databinding.ProductItemLayoutBinding;
 import com.yathams.loginsystem.databinding.StoreItemLayoutBinding;
-import com.yathams.loginsystem.model.LocationItem;
-import com.yathams.loginsystem.pojo.ProductItem;
+import com.yathams.loginsystem.model.StoreLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +20,9 @@ import java.util.List;
 public class StoreLocationsAdapter extends RecyclerView.Adapter<StoreLocationsAdapter.ViewHolder>{
 
     private Activity mActivity;
-    private List<LocationItem> stores = new ArrayList<>();
+    private List<StoreLocation> stores = new ArrayList<>();
 
-    public StoreLocationsAdapter(Activity mActivity, List<LocationItem> stores) {
+    public StoreLocationsAdapter(Activity mActivity, List<StoreLocation> stores) {
         this.mActivity = mActivity;
         this.stores = stores;
     }
@@ -37,7 +35,7 @@ public class StoreLocationsAdapter extends RecyclerView.Adapter<StoreLocationsAd
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final LocationItem store = stores.get(position);
+        final StoreLocation store = stores.get(position);
         holder.binding.setStore(store);
         holder.binding.storeItemContainer.setBackgroundColor(stores.get(position).isSelected?Color.BLUE:Color.WHITE);
         holder.binding.storeItemContainer.setOnClickListener(new View.OnClickListener() {

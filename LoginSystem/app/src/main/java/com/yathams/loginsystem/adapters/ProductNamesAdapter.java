@@ -33,8 +33,29 @@ public class ProductNamesAdapter extends RecyclerView.Adapter<ProductNamesAdapte
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.binding.setProduct(productNames.get(position));
+        holder.binding.buttonPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productNames.get(position).quantity++;
+                notifyDataSetChanged();
+            }
+        });
+        holder.binding.buttonMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productNames.get(position).quantity--;
+                notifyDataSetChanged();
+            }
+        });
+        holder.binding.imageViewDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                productNames.remove(position);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
